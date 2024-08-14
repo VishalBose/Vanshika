@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Like Me?</title>
+    <style>
+        #yesButton {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+        #noButton, #thankYouButton, #okayButton {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+        #thankYouButton, #okayButton {
+            display: none;
+        }
+        #footer {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>I like you. Do you like me?</h1>
+    <button id="yesButton" onclick="handleYesClick()">Yes</button>
+    <button id="noButton" onclick="handleNoClick()">No</button>
+    <button id="thankYouButton" disabled>Thank you ☺️</button>
+    <button id="okayButton" disabled>Okay 😔</button>
+
+    <div id="footer">From: Vishal</div>
+
+    <script>
+        let noClickCount = 0;
+        const maxNoClicks = 6;
+        let yesClicked = false;
+        const noButtonTexts = [
+            "No",
+            "Nope (hey don't do that)",
+            "Don't do it",
+            "Please reconsider",
+            "Please 🥺",
+            "Last time 🥺🥺",
+            "Okay 😔"
+        ];
+
+        function handleNoClick() {
+            noClickCount++;
+            if (noClickCount < maxNoClicks) {
+                let yesButton = document.getElementById("yesButton");
+                let currentSize = parseInt(window.getComputedStyle(yesButton).fontSize);
+                yesButton.style.fontSize = (currentSize + 4) + "px";
+                document.getElementById("noButton").innerText = noButtonTexts[noClickCount];
+            } else {
+                document.getElementById("noButton").style.display = "none";
+                document.getElementById("okayButton").style.display = "inline-block";
+            }
+        }
+
+        function handleYesClick() {
+            yesClicked = true;
+            document.getElementById("noButton").style.display = "none";
+            document.getElementById("thankYouButton").style.display = "inline-block";
+        }
+
+        window.addEventListener('beforeunload', (event) => {
+            if (noClickCount < maxNoClicks && !yesClicked) {
+                event.preventDefault();
+                event.returnValue = ''; // Display a generic warning
+            }
+        });
+    </script>
+</body>
+</html>
